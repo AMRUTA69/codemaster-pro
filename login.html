@@ -1,0 +1,29 @@
+<script>
+    function loginUser() {
+        const form = document.querySelector('form');
+        const formData = new FormData(form);
+
+        fetch('/login/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Force redirect
+                window.location.replace('/compiler/');
+            } else {
+                alert('Login failed! Invalid credentials.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong!');
+        });
+
+        return false;
+    }
+</script>

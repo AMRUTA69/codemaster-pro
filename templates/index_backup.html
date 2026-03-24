@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMaster Pro - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .navbar {
+            background: #1e293b;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #334155;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: #4f46e5;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            color: #94a3b8;
+        }
+
+        .user-name i {
+            margin-right: 8px;
+            color: #4f46e5;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
+            padding: 20px;
+            height: calc(100vh - 80px);
+        }
+
+        .saved-codes {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-item {
+            background: #334155;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .code-item:hover {
+            background: #3b4b5e;
+            transform: translateX(5px);
+        }
+
+        .code-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .code-meta {
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            gap: 10px;
+        }
+
+        .editor-area {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .language-selector label {
+            color: #94a3b8;
+        }
+
+        select {
+            background: #334155;
+            color: #fff;
+            border: 1px solid #4b5563;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1e293b;
+        }
+
+        .ai-toggle {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .ai-toggle.active {
+            background: #10b981;
+        }
+
+        .code-input {
+            flex: 1;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #fff;
+            resize: none;
+            margin-bottom: 20px;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-run {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-run:hover {
+            background: #059669;
+        }
+
+        .btn-save {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #4338ca;
+        }
+
+        .btn-ai {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .btn-ai:hover {
+            background: #7c3aed;
+        }
+
+        .output-area {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .output-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+        }
+
+        .copy-btn {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .output-content {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            min-height: 150px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+
+        .ai-suggestions {
+            background: #2d3748;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .ai-title {
+            color: #8b5cf6;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .suggestion-item {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggestion-item:hover {
+            background: #3b4b5e;
+            transform: translateX(5px);
+        }
+
+        .suggestion-item i {
+            color: #8b5cf6;
+            margin-right: 8px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #334155;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #334155;
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4f46e5;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <span>CodeMaster Pro</span>
+        </div>
+        <div class="user-menu">
+            <div class="user-name">
+                <i class="fas fa-user-circle"></i>
+                <span id="username">Amruta</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Left Sidebar - Saved Codes & MCQ -->
+        <div class="saved-codes">
+            <div class="sidebar-title">
+                <i class="fas fa-history"></i> Saved Codes
+            </div>
+            <div id="savedCodesList">
+                <!-- Saved codes will be loaded dynamically -->
+                <div class="code-item" style="text-align:center;">Loading saved codes...</div>
+            </div>
+
+            <!-- MCQ Practice Section -->
+            <div style="margin-top: 30px;">
+                <div class="sidebar-title">
+                    <i class="fas fa-question-circle"></i> Practice Questions
+                </div>
+                
+                <select id="mcqLanguage" style="width:100%; padding:8px; margin-bottom:15px; background:#334155; color:#fff; border-radius:6px;">
+                    <option value="python">🐍 Python</option>
+                    <option value="javascript">📜 JavaScript</option>
+                    <option value="java">☕ Java</option>
+                    <option value="cpp">⚙️ C++</option>
+                </select>
+                
+                <div id="questionsList" style="max-height:300px; overflow-y:auto;">
+                    <div class="code-item" style="text-align:center;">Select language to load questions</div>
+                </div>
+                
+                <div id="questionDisplay" style="display:none; margin-top:15px;">
+                    <div style="background:#334155; padding:15px; border-radius:8px;">
+                        <div style="display:flex; justify-content:space-between;">
+                            <span id="questionDifficulty" style="background:#4f46e5; padding:3px 8px; border-radius:4px;"></span>
+                            <span id="questionCount"></span>
+                        </div>
+                        <p id="questionText" style="margin:15px 0; font-weight:500;"></p>
+                        <div id="optionsContainer"></div>
+                        <div style="display:flex; gap:10px; margin-top:20px;">
+                            <button onclick="submitAnswer()" style="flex:1; background:#10b981; padding:8px; border:none; border-radius:4px; color:white; cursor:pointer;">Submit</button>
+                            <button onclick="nextQuestion()" style="flex:1; background:#4f46e5; padding:8px; border:none; border-radius:4px; color:white; cursor:pointer;">Next</button>
+                        </div>
+                        <div id="answerResult" style="margin-top:15px; padding:10px; border-radius:4px; display:none;"></div>
+                        <button onclick="backToQuestions()" style="width:100%; background:#64748b; padding:8px; border:none; border-radius:4px; color:white; margin-top:10px; cursor:pointer;">← Back</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center - Editor -->
+        <div class="editor-area">
+            <div class="editor-header">
+                <div class="language-selector">
+                    <label>Language:</label>
+                    <select id="language">
+                        <option value="python">🐍 Python</option>
+                        <option value="javascript">📜 JavaScript</option>
+                        <option value="java">☕ Java</option>
+                        <option value="cpp">⚙️ C++</option>
+                    </select>
+                </div>
+                <button class="ai-toggle" id="aiToggle" onclick="toggleAI()">
+                    <i class="fas fa-robot"></i> AI Assistant
+                </button>
+            </div>
+
+            <textarea id="code" class="code-input" placeholder="Write your code...">print("Hello, World!")</textarea>
+
+            <div class="action-buttons">
+                <button class="btn btn-run" onclick="runCode()"><i class="fas fa-play"></i> Run</button>
+                <button class="btn btn-save" onclick="saveCode()"><i class="fas fa-save"></i> Save</button>
+                <button class="btn btn-ai" onclick="getAISuggestions()"><i class="fas fa-magic"></i> AI</button>
+            </div>
+        </div>
+
+        <!-- Right Sidebar - Output -->
+        <div class="output-area">
+            <div class="output-header">
+                <div class="output-title"><i class="fas fa-terminal"></i> Output</div>
+                <button class="copy-btn" onclick="copyOutput()"><i class="fas fa-copy"></i> Copy</button>
+            </div>
+            <div id="output" class="output-content">Ready to run...</div>
+            
+            <div id="aiSuggestions" style="display:none;" class="ai-suggestions">
+                <div class="ai-title"><i class="fas fa-robot"></i> AI Suggestions</div>
+                <div id="suggestionsList"></div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item"><span class="stat-value" id="execTime">0</span><span class="stat-label">ms</span></div>
+                <div class="stat-item"><span class="stat-value" id="memoryUsed">0</span><span class="stat-label">KB</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('username').innerText = 'Amruta';
+
+        // ==================== LOAD SAVED CODES ====================
+        function loadSavedCodes() {
+            fetch('/my-codes/')
+            .then(response => response.json())
+            .then(data => {
+                const container = document.getElementById('savedCodesList');
+                if (data.codes.length === 0) {
+                    container.innerHTML = '<div class="code-item" style="text-align:center;">No saved codes yet</div>';
+                    return;
+                }
+                
+                let html = '';
+                data.codes.forEach(code => {
+                    html += `
+                        <div class="code-item" onclick="loadCode(${code.id})">
+                            <div class="code-title">${code.title}</div>
+                            <div class="code-meta">
+                                <span><i class="fab fa-${code.language === 'javascript' ? 'js' : code.language}"></i> ${code.language}</span>
+                                <span>${code.created_at}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            });
+        }
+
+        function loadCode(codeId) {
+            fetch(`/get-code/${codeId}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('code').value = data.code;
+                document.getElementById('language').value = data.language;
+                document.getElementById('output').innerHTML = data.output || 'Ready to run...';
+            });
+        }
+
+        // ==================== RUN CODE ====================
+        function runCode() {
+            const code = document.getElementById('code').value;
+            const language = document.getElementById('language').value;
+            const outputDiv = document.getElementById('output');
+            const startTime = performance.now();
+            
+            outputDiv.innerHTML = 'Running...';
+            
+            fetch('/run-code/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `code=${encodeURIComponent(code)}&language=${encodeURIComponent(language)}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                const endTime = performance.now();
+                document.getElementById('execTime').innerText = Math.round(endTime - startTime);
+                document.getElementById('memoryUsed').innerText = Math.floor(Math.random() * 100) + 50;
+                
+                if (data.output) {
+                    outputDiv.innerHTML = data.output;
+                } else if (data.error) {
+                    outputDiv.innerHTML = '❌ Error: ' + data.error;
+                }
+            });
+        }
+
+        // ==================== SAVE CODE ====================
+        function saveCode() {
+            const title = prompt('Enter title:');
+            if (!title) return;
+            const code = document.getElementById('code').value;
+            const language = document.getElementById('language').value;
+            fetch('/save-code/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `code=${encodeURIComponent(code)}&language=${encodeURIComponent(language)}&title=${encodeURIComponent(title)}`
+            })
+            .then(() => {
+                alert('✅ Saved');
+                loadSavedCodes(); // Refresh saved codes list
+            });
+        }
+
+        // ==================== AI SUGGESTIONS ====================
+        function toggleAI() {
+            const aiToggle = document.getElementById('aiToggle');
+            const aiSuggestions = document.getElementById('aiSuggestions');
+            aiToggle.classList.toggle('active');
+            if (aiToggle.classList.contains('active')) {
+                aiSuggestions.style.display = 'block';
+                aiToggle.innerHTML = '<i class="fas fa-robot"></i> AI Active';
+            } else {
+                aiSuggestions.style.display = 'none';
+                aiToggle.innerHTML = '<i class="fas fa-robot"></i> AI Assistant';
+            }
+        }
+
+        function getAISuggestions() {
+            const code = document.getElementById('code').value;
+            const language = document.getElementById('language').value;
+            const outputText = document.getElementById('output').innerText;
+            const suggestionsList = document.getElementById('suggestionsList');
+            
+            let suggestions = [];
+            let suggestionCodes = [];
+            
+            // Universal error detection
+            if (outputText.includes('not defined') || outputText.includes('cannot find')) {
+                suggestions.push('❌ Variable is not defined. Declare it first!');
+                if (language === 'python') suggestionCodes.push('x = 5  # Define x');
+                else if (language === 'javascript') suggestionCodes.push('let x = 5;');
+                else if (language === 'java') suggestionCodes.push('int x = 5;');
+                else if (language === 'cpp') suggestionCodes.push('int x = 5;');
+            }
+            else if (outputText.includes('expected') || outputText.includes('invalid syntax')) {
+                if (outputText.includes(':')) {
+                    suggestions.push('❌ Missing colon (:) after if/for/def');
+                    suggestionCodes.push('if condition:\n    # Your code');
+                } else {
+                    suggestions.push('❌ Syntax error! Check brackets, quotes, or semicolons.');
+                }
+            }
+            else if (outputText.includes('was never closed') || outputText.includes('EOL')) {
+                suggestions.push('❌ Quotes are not closed. Add closing " or \'');
+                suggestionCodes.push('print("Hello")');
+            }
+            else if (outputText.includes('indentation')) {
+                suggestions.push('❌ Indentation error! Use 4 spaces.');
+                suggestionCodes.push('if True:\n    print("Indented")');
+            }
+            
+            // Language-specific best practices
+            if (suggestions.length === 0) {
+                if (language === 'python' && code.includes('print') && !code.includes('f"')) {
+                    suggestions.push('💡 Use f-strings: print(f"Hello {name}")');
+                    suggestionCodes.push('name = "Amruta"\nprint(f"Hello {name}")');
+                }
+                else if (language === 'javascript' && code.includes('console.log') && !code.includes(';')) {
+                    suggestions.push('💡 Add semicolon at end');
+                    suggestionCodes.push('console.log("Hello");');
+                }
+                else {
+                    suggestions.push('✅ Code looks good!');
+                }
+            }
+            
+            // Display suggestions
+            let html = '';
+            suggestions.forEach((s, index) => {
+                const emoji = s.includes('❌') ? '❌' : s.includes('💡') ? '💡' : '✅';
+                const snippet = suggestionCodes[index] || '';
+                html += `<div class="suggestion-item" onclick='applySuggestion(\`${snippet.replace(/`/g, '\\`')}\`)'>${emoji} ${s}</div>`;
+            });
+            
+            suggestionsList.innerHTML = html;
+            document.getElementById('aiSuggestions').style.display = 'block';
+        }
+
+        function applySuggestion(snippet) {
+            if (snippet) {
+                document.getElementById('code').value = snippet;
+            }
+        }
+
+        // ==================== MCQ FUNCTIONS ====================
+        let currentQuestions = [], currentIndex = 0, selectedOpt = null;
+
+        function loadQuestions() {
+            const lang = document.getElementById('mcqLanguage').value;
+            fetch(`/get-questions/?language=${lang}`)
+            .then(res => res.json())
+            .then(data => {
+                currentQuestions = data.questions;
+                let html = '';
+                if (currentQuestions.length === 0) {
+                    html = '<div class="code-item">No questions</div>';
+                } else {
+                    currentQuestions.forEach((q, i) => {
+                        html += `<div class="code-item" onclick="showQuestion(${i})">
+                            <div class="code-title">${i+1}. ${q.question.substring(0,30)}...</div>
+                            <div class="code-meta">${q.difficulty}</div>
+                        </div>`;
+                    });
+                }
+                document.getElementById('questionsList').innerHTML = html;
+            });
+        }
+
+        function showQuestion(i) {
+            currentIndex = i;
+            const q = currentQuestions[i];
+            selectedOpt = null;
+            document.getElementById('questionsList').style.display = 'none';
+            document.getElementById('questionDisplay').style.display = 'block';
+            document.getElementById('questionText').innerText = q.question;
+            document.getElementById('questionDifficulty').innerText = q.difficulty;
+            document.getElementById('questionCount').innerText = `${i+1}/${currentQuestions.length}`;
+            
+            let opts = '';
+            ['A','B','C','D'].forEach(l => {
+                opts += `<div onclick="selectOpt('${l}')" id="opt-${l}" style="background:#1e293b; padding:10px; margin:5px 0; border-radius:4px; cursor:pointer; border:2px solid transparent;">
+                    <strong>${l})</strong> ${q.options[l]}
+                </div>`;
+            });
+            document.getElementById('optionsContainer').innerHTML = opts;
+            document.getElementById('answerResult').style.display = 'none';
+        }
+
+        function selectOpt(opt) {
+            selectedOpt = opt;
+            document.querySelectorAll('[id^="opt-"]').forEach(el => el.style.borderColor = 'transparent');
+            document.getElementById(`opt-${opt}`).style.borderColor = '#4f46e5';
+        }
+
+        function submitAnswer() {
+            if (!selectedOpt) return alert('Select an option');
+            const q = currentQuestions[currentIndex];
+            fetch('/check-answer/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `question_id=${q.id}&selected=${selectedOpt}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                const resDiv = document.getElementById('answerResult');
+                resDiv.style.display = 'block';
+                if (data.correct) {
+                    resDiv.innerHTML = '✅ Correct!';
+                    resDiv.style.background = '#10b98120';
+                    resDiv.style.color = '#10b981';
+                } else {
+                    resDiv.innerHTML = `❌ Incorrect. Correct: ${data.correct_option}. ${data.explanation}`;
+                    resDiv.style.background = '#ef444420';
+                    resDiv.style.color = '#ef4444';
+                }
+            });
+        }
+
+        function nextQuestion() {
+            if (currentIndex < currentQuestions.length - 1) {
+                showQuestion(currentIndex + 1);
+            } else {
+                backToQuestions();
+            }
+        }
+
+        function backToQuestions() {
+            document.getElementById('questionsList').style.display = 'block';
+            document.getElementById('questionDisplay').style.display = 'none';
+        }
+
+        // ==================== UTILITY FUNCTIONS ====================
+        function copyOutput() {
+            navigator.clipboard.writeText(document.getElementById('output').innerText);
+            alert('📋 Copied');
+        }
+
+        function logout() {
+            window.location.href = '/logout/';
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // ==================== INITIAL LOADS ====================
+        document.getElementById('mcqLanguage').addEventListener('change', loadQuestions);
+        setTimeout(loadQuestions, 500);
+        loadSavedCodes(); // Load saved codes on page load
+    </script>
+</body>
+</html>

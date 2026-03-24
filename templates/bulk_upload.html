@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bulk Upload Questions - CodeMaster Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #1e293b;
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid #334155;
+        }
+        h1 {
+            color: #60a5fa;
+            margin-bottom: 1rem;
+        }
+        .info {
+            background: #0f172a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid #60a5fa;
+        }
+        .info pre {
+            background: #0f172a;
+            padding: 1rem;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 1rem;
+            background: #0f172a;
+            border: 2px dashed #334155;
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            margin: 1rem 0;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+        .result.success {
+            background: #064e3b;
+            border: 1px solid #10b981;
+            display: block;
+        }
+        .result.error {
+            background: #7f1a1a;
+            border: 1px solid #ef4444;
+            display: block;
+        }
+        .back-link {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .back-link a {
+            color: #60a5fa;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📤 Bulk Upload Questions</h1>
+        <p>Upload CSV file with unlimited questions to add them to database</p>
+        
+        <div class="info">
+            <strong>📋 CSV Format:</strong>
+            <pre>question_text,option_a,option_b,option_c,option_d,correct_option,language,difficulty,topic,points,explanation</pre>
+            <strong>📝 Example:</strong>
+            <pre>What is 2+2?,3,4,5,6,B,python,easy,Operators,10,2+2 equals 4</pre>
+            <strong>🔗 Download Sample:</strong> <a href="/sample-csv/" style="color: #60a5fa;" download>sample_questions.csv</a>
+        </div>
+        
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" id="csvFile" name="csv_file" accept=".csv" required>
+            <button type="submit">🚀 Upload Questions</button>
+        </form>
+        
+        <div id="result" class="result"></div>
+        
+        <div class="back-link">
+            <a href="/compiler/">← Back to Compiler</a>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('uploadForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const file = document.getElementById('csvFile').files[0];
+            if (!file) {
+                alert('Please select a CSV file');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('csv_file', file);
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = 'result';
+            resultDiv.innerHTML = '⏳ Uploading and processing...';
+            resultDiv.style.display = 'block';
+            
+            try {
+                const response = await fetch('/bulk-upload/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultDiv.className = 'result success';
+                    resultDiv.innerHTML = `✅ ${data.message}<br>${data.errors ? 'Errors: ' + data.errors.join(', ') : ''}`;
+                } else {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `❌ Error: ${data.error}`;
+                }
+            } catch (err) {
+                resultDiv.className = 'result error';
+                resultDiv.innerHTML = `❌ Upload failed: ${err.message}`;
+            }
+        };
+        
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>

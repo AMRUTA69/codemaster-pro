@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMaster Pro - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #fff;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #1e293b;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #334155;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: #4f46e5;
+        }
+
+        .logo span {
+            font-size: 22px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-name {
+            color: #94a3b8;
+        }
+
+        .user-name i {
+            margin-right: 8px;
+            color: #4f46e5;
+        }
+
+        .logout-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Main Container */
+        .main-container {
+            display: grid;
+            grid-template-columns: 280px 1fr 320px;
+            gap: 20px;
+            padding: 20px;
+            height: calc(100vh - 80px);
+        }
+
+        /* Left Sidebar - Saved Codes */
+        .saved-codes {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-title {
+            font-size: 16px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .code-item {
+            background: #334155;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .code-item:hover {
+            background: #3b4b5e;
+            transform: translateX(5px);
+        }
+
+        .code-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .code-meta {
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Center - Editor Area */
+        .editor-area {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .language-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .language-selector label {
+            color: #94a3b8;
+        }
+
+        select {
+            background: #334155;
+            color: #fff;
+            border: 1px solid #4b5563;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1e293b;
+        }
+
+        .ai-toggle {
+            background: #4f46e5;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+
+        .ai-toggle.active {
+            background: #10b981;
+        }
+
+        .code-input {
+            flex: 1;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #fff;
+            resize: none;
+            margin-bottom: 20px;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-run {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-run:hover {
+            background: #059669;
+        }
+
+        .btn-save {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #4338ca;
+        }
+
+        .btn-ai {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .btn-ai:hover {
+            background: #7c3aed;
+        }
+
+        /* Right Sidebar - Output & AI */
+        .output-area {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+        }
+
+        .output-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+        }
+
+        .copy-btn {
+            background: #334155;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .output-content {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            min-height: 150px;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+        }
+
+        .ai-suggestions {
+            background: #2d3748;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .ai-title {
+            color: #8b5cf6;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .suggestion-item {
+            background: #1e293b;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: #cbd5e1;
+        }
+
+        .suggestion-item i {
+            color: #8b5cf6;
+            margin-right: 8px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #334155;
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #334155;
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #4f46e5;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <span>CodeMaster Pro</span>
+        </div>
+        <div class="user-menu">
+            <div class="user-name">
+                <i class="fas fa-user-circle"></i>
+                <span id="username">Amruta</span>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Left Sidebar - Saved Codes -->
+        <div class="saved-codes">
+            <div class="sidebar-title">
+                <i class="fas fa-history"></i> Saved Codes
+            </div>
+            <div id="savedCodesList">
+                <div class="code-item">
+                    <div class="code-title">Python Calculator</div>
+                    <div class="code-meta">
+                        <span><i class="fab fa-python"></i> Python</span>
+                        <span>2 hours ago</span>
+                    </div>
+                </div>
+                <div class="code-item">
+                    <div class="code-title">Array Sort</div>
+                    <div class="code-meta">
+                        <span><i class="fab fa-js"></i> JavaScript</span>
+                        <span>Yesterday</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center - Editor Area -->
+        <div class="editor-area">
+            <div class="editor-header">
+                <div class="language-selector">
+                    <label><i class="fas fa-globe"></i> Language:</label>
+                    <select id="language">
+                        <option value="python">🐍 Python</option>
+                        <option value="javascript">📜 JavaScript</option>
+                        <option value="java">☕ Java</option>
+                        <option value="cpp">⚙️ C++</option>
+                    </select>
+                </div>
+                <button class="ai-toggle" id="aiToggle" onclick="toggleAI()">
+                    <i class="fas fa-robot"></i> AI Assistant
+                </button>
+            </div>
+
+            <textarea id="code" class="code-input" placeholder="Write your code here...">print("Hello, World!")</textarea>
+
+            <div class="action-buttons">
+                <button class="btn btn-run" onclick="runCode()">
+                    <i class="fas fa-play"></i> Run Code
+                </button>
+                <button class="btn btn-save" onclick="saveCode()">
+                    <i class="fas fa-save"></i> Save Code
+                </button>
+                <button class="btn btn-ai" onclick="getAISuggestions()">
+                    <i class="fas fa-magic"></i> AI Suggest
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Sidebar - Output & AI -->
+        <div class="output-area">
+            <div class="output-header">
+                <div class="output-title">
+                    <i class="fas fa-terminal"></i> Output
+                </div>
+                <button class="copy-btn" onclick="copyOutput()">
+                    <i class="fas fa-copy"></i> Copy
+                </button>
+            </div>
+            
+            <div id="output" class="output-content">
+                Ready to run...
+            </div>
+
+            <div id="aiSuggestions" class="ai-suggestions" style="display: none;">
+                <div class="ai-title">
+                    <i class="fas fa-robot"></i> AI Suggestions
+                </div>
+                <div id="suggestionsList">
+                    <div class="suggestion-item">
+                        <i class="fas fa-lightbulb"></i>
+                        Tip: Use meaningful variable names
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="execTime">0</div>
+                    <div class="stat-label">Time (ms)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="memoryUsed">0</div>
+                    <div class="stat-label">Memory (KB)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get username from server (you can set this from Django)
+        document.getElementById('username').innerText = 'Amruta';
+
+        function runCode() {
+            const code = document.getElementById('code').value;
+            const language = document.getElementById('language').value;
+            const outputDiv = document.getElementById('output');
+            
+            outputDiv.innerHTML = 'Running...';
+            
+            fetch('/run-code/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `code=${encodeURIComponent(code)}&language=${encodeURIComponent(language)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.output) {
+                    outputDiv.innerHTML = data.output;
+                } else if (data.error) {
+                    outputDiv.innerHTML = '❌ Error: ' + data.error;
+                }
+            });
+        }
+
+        function saveCode() {
+            const code = document.getElementById('code').value;
+            const language = document.getElementById('language').value;
+            const title = prompt('Enter title for your code:', 'My Code');
+            
+            if (!title) return;
+            
+            fetch('/save-code/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: `code=${encodeURIComponent(code)}&language=${encodeURIComponent(language)}&title=${encodeURIComponent(title)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('✅ Code saved successfully!');
+            });
+        }
+        function toggleAI() {
+            const aiToggle = document.getElementById('aiToggle');
+            const aiSuggestions = document.getElementById('aiSuggestions');
+            
+            aiToggle.classList.toggle('active');
+            if (aiToggle.classList.contains('active')) {
+                aiSuggestions.style.display = 'block';
+                aiToggle.innerHTML = '<i class="fas fa-robot"></i> AI Active';
+            } else {
+                aiSuggestions.style.display = 'none';
+                aiToggle.innerHTML = '<i class="fas fa-robot"></i> AI Assistant';
+            }
+        }
+
+        function getAISuggestions() {
+            const code = document.getElementById('code').value;
+            const suggestionsList = document.getElementById('suggestionsList');
+            
+            // Simple AI suggestions
+            let suggestions = [];
+            
+            if (code.includes('for')) {
+                suggestions.push('💡 Use enumerate() for index in loops');
+            }
+            if (code.includes('print')) {
+                suggestions.push('💡 Use f-strings: print(f"Hello {name}")');
+            }
+            if (code.includes('if') && !code.includes('elif')) {
+                suggestions.push('💡 Consider using elif for multiple conditions');
+            }
+            
+            if (suggestions.length === 0) {
+                suggestions.push('💡 Code looks good! Add comments for clarity');
+            }
+            
+            let html = '';
+            suggestions.forEach(s => {
+                html += `<div class="suggestion-item"><i class="fas fa-lightbulb"></i> ${s}</div>`;
+            });
+            
+            suggestionsList.innerHTML = html;
+            document.getElementById('aiSuggestions').style.display = 'block';
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('output').innerText;
+            navigator.clipboard.writeText(output);
+            alert('📋 Output copied!');
+        }
+
+        function logout() {
+            window.location.href = '/logout/';
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>
