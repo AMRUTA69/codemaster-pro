@@ -21,7 +21,7 @@ import csv
 
 # ============ GEMINI AI IMPORT ============
 # Configure Gemini AI with your API key
-GEMINI_API_KEY = "AIzaSyBX3CjdEZ8AU8tkKk4IY5A0V6opIoLpDLc"
+GEMINI_API_KEY = "AIzaSyD2OrX8LmLV_kzrdaIBDpqE6pc8fwhkPR8"
 
 # Home page (Compiler)
 def home(request):
@@ -273,6 +273,7 @@ Answer in a friendly, helpful tone."""
                 prompt = f"Explain this code:\n{code}"
             
             # Direct API call to Google Gemini with WORKING MODEL
+            # Using gemini-2.5-flash (stable version from model list)
             url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={GEMINI_API_KEY}"
             
             payload = {
@@ -780,4 +781,4 @@ def download_sample_csv(request):
     for sample in samples:
         writer.writerow(sample)
     
-    return response
+    return response 
