@@ -17,9 +17,18 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('forgot-password/', views.forgot_password_view, name='forgot_password'),
+    
+    # Pages
+    path('about/', views.about_view, name='about'),
+    path('features/', views.features_view, name='features'),
     
     # Code Execution
     path('run-code/', views.run_code, name='run_code'),
+    
+    # ============ INTERACTIVE MODE (ONECOMPILER STYLE) ============
+    path('run-interactive/', views.run_interactive_code, name='run_interactive'),
+    path('stop-interactive/', views.stop_interactive_session, name='stop_interactive'),
     
     # AI Assistant
     path('ai-assistant/', views.ai_assistant, name='ai_assistant'),

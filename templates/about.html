@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - CodeMaster Pro</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #fff; }
+        
+        .navbar {
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
+            padding: 20px 50px; display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-size: 24px; font-weight: bold; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: #fff; text-decoration: none; padding: 8px 20px; border-radius: 5px; transition: all 0.3s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.2); }
+        .nav-links .btn-login { background: #4CAF50; }
+        
+        .container {
+            max-width: 900px; margin: 50px auto; padding: 40px;
+            background: rgba(255, 255, 255, 0.95); border-radius: 20px;
+            color: #333; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-size: 40px; color: #764ba2; margin-bottom: 15px; }
+        .header p { font-size: 18px; color: #666; }
+
+        .content { display: flex; flex-direction: column; gap: 30px; }
+        .section { display: flex; gap: 30px; align-items: center; }
+        .section.reverse { flex-direction: row-reverse; }
+        .section img { width: 400px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .section img:hover { transform: scale(1.02); }
+        .text-content { flex: 1; }
+        .text-content h2 { color: #667eea; margin-bottom: 15px; font-size: 28px; }
+        .text-content p { font-size: 16px; line-height: 1.6; color: #555; }
+
+        .dev-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; padding: 20px; border-radius: 15px; text-align: center;
+            margin-top: 40px; box-shadow: 0 10px 30px rgba(118, 75, 162, 0.3);
+            transition: transform 0.3s; cursor: default;
+        }
+        .dev-badge:hover { transform: translateY(-5px); }
+        .dev-badge h3 { font-size: 24px; margin-bottom: 10px; }
+        .dev-badge p { font-size: 16px; opacity: 0.9; }
+
+        /* Mobile Responsive Overrides */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+        @media (max-width: 576px) {
+            .navbar { padding: 15px 20px; flex-wrap: wrap; }
+            .hamburger { display: block; }
+            .nav-links { display: none; flex-direction: column; width: 100%; margin-top: 15px; gap: 15px; text-align: center; }
+            .nav-links.show { display: flex; }
+            .container { margin: 20px; padding: 20px; }
+            .header h1 { font-size: 30px; }
+            .section, .section.reverse { flex-direction: column; text-align: center; }
+            .section img { width: 100%; }
+            .dev-badge { padding: 15px; }
+            .dev-badge h3 { font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="logo"><span>⚡</span> CodeMaster Pro</a>
+        <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a href="/features/">Features</a>
+            <a href="/about/">About</a>
+            <a href="/login/" class="btn-login">Login</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>About CodeMaster Pro</h1>
+            <p>Empowering the next generation of coders.</p>
+        </div>
+        
+        <div class="content">
+            <div class="section">
+                <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Coding">
+                <div class="text-content">
+                    <h2>Our Mission</h2>
+                    <p>CodeMaster Pro was built with a simple goal: to provide an accessible, powerful, and interactive platform for developers and students to write, run, and share code in multiple languages without any setup required.</p>
+                </div>
+            </div>
+            
+            <div class="section reverse">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="Platform">
+                <div class="text-content">
+                    <h2>Seamless Experience</h2>
+                    <p>Whether you're practicing Python, Java, C++, or JavaScript, our platform provides instant execution, AI-powered language conversion, and interactive input handling to make your coding journey as smooth as possible.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dev-badge">
+            <h3>Developed by Amruta</h3>
+            <p>Passionate Developer & Creator of CodeMaster Pro</p>
+        </div>
+    </div>
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('show');
+        }
+    </script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

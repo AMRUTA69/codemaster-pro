@@ -1,5 +1,5 @@
 import pymysql
-pymysql.version_info = (2, 2, 1, "final", 0)  # Force version to satisfy Django 6.0
+pymysql.version_info = (2, 2, 1, "final", 0)
 pymysql.install_as_MySQLdb()
 
 from pathlib import Path
@@ -17,7 +17,7 @@ SECRET_KEY = 'django-insecure-b544lc(8^5t%ug(-e2l50x!d$jl70huq&*3b!!*3&os_v1ekfw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition

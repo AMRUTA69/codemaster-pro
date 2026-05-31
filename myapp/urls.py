@@ -10,9 +10,18 @@ urlpatterns = [
     path('signup/', views.signup_view, name='signup'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('forgot-password/', views.forgot_password_view, name='forgot_password'),
+    
+    # Pages
+    path('about/', views.about_view, name='about'),
+    path('features/', views.features_view, name='features'),
     
     # Code Execution
     path('run-code/', views.run_code, name='run_code'),
+    
+    # ============ INTERACTIVE MODE (NEW - OneCompiler Style) ============
+    path('run-interactive/', views.run_interactive_code, name='run_interactive'),
+    path('stop-interactive/', views.stop_interactive_session, name='stop_interactive'),
     
     # AI Assistant
     path('ai-assistant/', views.ai_assistant, name='ai_assistant'),
@@ -41,7 +50,7 @@ urlpatterns = [
     path('get-questions/', views.get_questions, name='get_questions'),
     path('check-answer/', views.check_answer, name='check-answer'),
     
-    # ============ BULK UPLOAD (NEW) ============
+    # Bulk Upload
     path('bulk-upload/', views.bulk_upload_questions, name='bulk_upload'),
     path('sample-csv/', views.download_sample_csv, name='sample_csv'),
 ]

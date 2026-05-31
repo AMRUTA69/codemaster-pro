@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeMaster Pro - Online Code Compiler</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -15,6 +17,13 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
+            scroll-behavior: smooth;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Navbar */
@@ -226,6 +235,65 @@
         .footer p {
             margin: 5px 0;
         }
+
+        /* Mobile Responsive Overrides */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.8rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 576px) {
+            .navbar {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            .hamburger {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 15px;
+                gap: 15px;
+                text-align: center;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .hero {
+                flex-direction: column;
+                padding: 40px 20px;
+                text-align: center;
+            }
+            .hero-content h1 {
+                font-size: 32px;
+            }
+            .hero-image {
+                margin-top: 40px;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            .cta-buttons .btn {
+                width: 100%;
+            }
+            .features, .languages, .footer {
+                padding: 40px 20px;
+            }
+            .language-icons {
+                gap: 30px;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -234,12 +302,13 @@
         <div class="logo">
             <span>⚡</span> CodeMaster Pro
         </div>
-        <div class="nav-links">
-            <a href="#features">Features</a>
+        <button class="hamburger" onclick="toggleMobileMenu()">☰</button>
+        <div class="nav-links" id="navLinks">
+            <a href="/features/">Features</a>
             <a href="#languages">Languages</a>
-            <a href="#about">About</a>
-            <a href="/login/" class="btn-login">Login</a>
-            <a href="/signup/" class="btn-login">Sign Up</a>
+            <a href="/about/">About</a>
+            <a href="/login/" class="btn-login" style="transition: transform 0.3s, background 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Login</a>
+            <a href="/signup/" class="btn-login" style="transition: transform 0.3s, background 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">Sign Up</a>
         </div>
     </nav>
 
@@ -321,5 +390,12 @@
         <p>© 2026 CodeMaster Pro. All rights reserved.</p>
         <p>Made with ❤️ for students</p>
     </footer>
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('navLinks').classList.toggle('show');
+        }
+    </script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
